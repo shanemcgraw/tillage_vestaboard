@@ -13,9 +13,12 @@
         <img src="/beacon-logo.png" alt="Beacon Logo" class="header-logo">
         Beacon
       </h1>
-      <form method="POST" action="/logout" style="margin: 0;">
-        <button type="submit" class="btn secondary">Logout</button>
-      </form>
+      <div style="display: flex; gap: 0.5rem; align-items: center;">
+        <a href="/admin/compose" class="btn" style="background: #228B22; color: white; line-height: 1; padding: 0.75rem 1.5rem;">Compose</a>
+        <form method="POST" action="/logout" style="margin: 0;">
+          <button type="submit" class="btn secondary">Logout</button>
+        </form>
+      </div>
     </div>
 
     <% if (locals.flash) { %>

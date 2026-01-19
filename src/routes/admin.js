@@ -48,6 +48,65 @@ router.get('/', async (req, res) => {
   }
 });
 
+// GET /admin/compose - Compose new message
+router.get('/compose', (req, res) => {
+  res.render('compose');
+});
+
+// POST /admin/compose - Post composed message
+router.post('/compose', async (req, res) => {
+  try {
+    const { vestaboard_text } = req.body;
+
+    if (!vestaboard_text || !vestaboard_text.trim()) {
+      req.session.flash = { type: 'error', message: 'Message cannot be empty' };
+      return res.redirect('/admin/compose');
+    }
+
+    // Create message record
+    const message = await prisma.message.create({
+      data: {
+        senderEmail: 'admin@beacon',
+        senderName: 'Admin',
+        subject: 'Admin Compose',
+        rawBody: vestaboard_text,
+        cleanedBody: vestaboard_text,
+        vestaboardText: vestaboard_text,
+        status: 'approved',
+        reviewedAt: new Date()
+      }
+    });
+
+    // Post to Vestaboard
+    try {
+      await postToVestaboard(vestaboard_text);
+      await prisma.message.update({
+        where: { id: message.id },
+        data: {
+          status: 'posted',
+          postedAt: new Date()
+        }
+      });
+      req.session.flash = { type: 'success', message: 'Message posted to Vestaboard!' };
+    } catch (vestaError) {
+      await prisma.message.update({
+        where: { id: message.id },
+        data: {
+          status: 'failed',
+          errorMessage: vestaError.message
+        }
+      });
+      req.session.flash = { type: 'error', message: `Failed to post: ${vestaError.message}` };
+    }
+
+    res.redirect('/admin');
+  } catch (error) {
+    console.error('Compose error:', error);
+    req.session.flash = { type: 'error', message: 'Database error' };
+    res.redirect('/admin/compose');
+  }
+});
+
 // GET /admin/message/:id - Review single message
 router.get('/message/:id', async (req, res) => {
   try {
