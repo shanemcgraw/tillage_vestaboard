@@ -29,7 +29,12 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1><a href="/admin" style="text-decoration: none; color: inherit;">Beacon</a></h1>
+      <h1>
+        <a href="/admin" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 0.5rem;">
+          <img src="/beacon-logo.png" alt="Beacon Logo" class="header-logo">
+          Beacon
+        </a>
+      </h1>
       <span class="status-badge status-<%= message.status %>"><%= message.status %></span>
     </div>
 

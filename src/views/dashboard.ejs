@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beacon - Dashboard</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>
+        <img src="/beacon-logo.png" alt="Beacon Logo" class="header-logo">
+        Beacon
+      </h1>
+      <form method="POST" action="/logout" style="margin: 0;">
+        <button type="submit" class="btn secondary">Logout</button>
+      </form>
+    </div>
+
+    <% if (locals.flash) { %>
+      <div class="alert <%= flash.type %>"><%= flash.message %></div>
+    <% } %>
+
+    <div class="section">
+      <h2 class="section-title">Pending Review (<%= pending.length %>)</h2>
+      <% if (pending.length === 0) { %>
+        <div class="card empty-state">
+          <p>No messages pending review</p>
+          <p style="margin-top: 0.5rem; font-size: 0.9rem;">Send an email to board@tillage.place to submit a message</p>
+        </div>
+      <% } else { %>
+        <div class="message-list">
+          <% pending.forEach(msg => { %>
+            <a href="/admin/message/<%= msg.id %>" class="message-item" style="text-decoration: none; color: inherit;">
+              <div class="message-info">
+                <div class="message-sender">
+                  <%= msg.senderName || msg.senderEmail %>
+                  <% if (msg.senderName) { %>
+                    <span style="color: #999; font-weight: normal;">(<%= msg.senderEmail %>)</span>
+                  <% } %>
+                </div>
+                <div class="message-preview">
+                  <%= msg.cleanedBody ? msg.cleanedBody.substring(0, 80) + (msg.cleanedBody.length > 80 ? '...' : '') : '(empty)' %>
+                </div>
+                <div class="message-meta">
+                  <%= new Date(msg.createdAt).toLocaleString() %>
+                </div>
+              </div>
+              <span class="status-badge status-pending">Pending</span>
+            </a>
+          <% }) %>
+        </div>
+      <% } %>
+    </div>
+
+    <div class="section">
+      <h2 class="section-title">Recent History</h2>
+      <% if (history.length === 0) { %>
+        <div class="card empty-state">
+          <p>No messages processed yet</p>
+        </div>
+      <% } else { %>
+        <div class="message-list">
+          <% history.forEach(msg => { %>
+            <div class="message-item">
+              <div class="message-info">
+                <div class="message-sender">
+                  <%= msg.senderName || msg.senderEmail %>
+                </div>
+                <div class="message-meta">
+                  <%= new Date(msg.postedAt || msg.createdAt).toLocaleString() %>
+                </div>
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <span class="status-badge status-<%= msg.status %>"><%= msg.status %></span>
+                <% if (msg.status === 'failed') { %>
+                  <form method="POST" action="/admin/message/<%= msg.id %>/retry" style="margin: 0;">
+                    <button type="submit" class="btn primary" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Retry</button>
+                  </form>
+                <% } %>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</body>
+</html>
