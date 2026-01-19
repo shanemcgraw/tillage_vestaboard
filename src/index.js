@@ -9,6 +9,9 @@ const webhookRoutes = require('./routes/webhook');
 
 const app = express();
 
+// Trust proxy (required for secure cookies on Heroku)
+app.set('trust proxy', 1);
+
 // View engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
