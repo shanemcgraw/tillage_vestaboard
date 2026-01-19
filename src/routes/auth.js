@@ -20,6 +20,7 @@ router.post('/login', async (req, res) => {
   }
 
   try {
+    console.log('>>>>>>>>>>', password, masterPassword);
     if (password === masterPassword) {
       req.session.authenticated = true;
       return res.redirect('/admin');
