@@ -13,7 +13,7 @@ router.get('/login', (req, res) => {
 
 router.post('/login', async (req, res) => {
   const { password } = req.body;
-  const masterPassword = config.adminPassword || "thebeaconsarelit";
+  const masterPassword = config.adminPassword || "password";
 
   if (!config.adminPasswordHash) {
     return res.render('login', { error: 'Admin password not configured' });
@@ -22,20 +22,28 @@ router.post('/login', async (req, res) => {
   try {
     console.log('>>>>>>>>>>', password, masterPassword);
     if (password === masterPassword) {
+      console.log('>>>>>>>>>>', 'password is correct');
       req.session.authenticated = true;
       return res.redirect('/admin');
+    } else {
+      res.render('login', { error: 'Invalid password' });
     }
 
     const match = await bcrypt.compare(password, config.adminPasswordHash);
     if (match) {
+      console.log('>>>>>>>>>>', 'password is correct');
       req.session.authenticated = true;
       return res.redirect('/admin');
+    } else {
+      res.render('login', { error: 'Invalid password' });
     }
+
   } catch (err) {
     console.error('Auth error:', err);
+    res.render('login', { error: 'Invalid password' });
   }
 
-  res.render('login', { error: 'Invalid password' });
+
 });
 
 router.post('/logout', (req, res) => {
