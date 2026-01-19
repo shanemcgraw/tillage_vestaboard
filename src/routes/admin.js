@@ -232,4 +232,32 @@ router.post('/message/:id/retry', async (req, res) => {
   }
 });
 
+// POST /admin/message/:id/delete - Delete failed message
+router.post('/message/:id/delete', async (req, res) => {
+  try {
+    const message = await prisma.message.findFirst({
+      where: {
+        id: parseInt(req.params.id),
+        status: 'failed'
+      }
+    });
+
+    if (!message) {
+      req.session.flash = { type: 'error', message: 'Message not found or not in failed state' };
+      return res.redirect('/admin');
+    }
+
+    await prisma.message.delete({
+      where: { id: message.id }
+    });
+
+    req.session.flash = { type: 'success', message: 'Failed message deleted' };
+    res.redirect('/admin');
+  } catch (error) {
+    console.error('Delete error:', error);
+    req.session.flash = { type: 'error', message: 'Database error' };
+    res.redirect('/admin');
+  }
+});
+
 module.exports = router;

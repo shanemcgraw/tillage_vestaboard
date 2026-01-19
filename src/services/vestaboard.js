@@ -36,6 +36,7 @@ function textToCharacterCodes(text) {
 
 async function postToVestaboard(text) {
   const { apiKey, apiSecret, subscriptionId } = config.vestaboard;
+  console.log('>>>>>>>>>>', apiKey, apiSecret, subscriptionId);
 
   if (!apiKey || !apiSecret || !subscriptionId) {
     throw new Error('Vestaboard API key, secret, or subscription ID not configured');
@@ -49,6 +50,7 @@ async function postToVestaboard(text) {
     headers: {
       'X-Vestaboard-Api-Key': apiKey,
       'X-Vestaboard-Api-Secret': apiSecret,
+
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({ characters: characterCodes })
