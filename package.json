@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "node --watch src/index.js",
+    "build": "prisma generate",
     "hash-password": "node -e \"const bcrypt = require('bcrypt'); const pw = process.argv[1]; bcrypt.hash(pw, 10).then(h => console.log(h));\"",
     "init-db": "psql $DATABASE_URL -f scripts/init-db.sql"
   },
