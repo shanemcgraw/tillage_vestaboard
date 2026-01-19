@@ -35,22 +35,23 @@ function textToCharacterCodes(text) {
 }
 
 async function postToVestaboard(text) {
-  const { apiKey } = config.vestaboard;
+  const { apiKey, apiSecret, subscriptionId } = config.vestaboard;
 
-  if (!apiKey) {
-    throw new Error('Vestaboard API key not configured');
+  if (!apiKey || !apiSecret || !subscriptionId) {
+    throw new Error('Vestaboard API key, secret, or subscription ID not configured');
   }
 
   const characterCodes = textToCharacterCodes(text);
 
-  // Using the Read/Write API
-  const response = await fetch('https://rw.vestaboard.com/', {
+  // Using the Subscriptions API
+  const response = await fetch(`https://subscriptions.vestaboard.com/subscriptions/${subscriptionId}/message`, {
     method: 'POST',
     headers: {
-      'X-Vestaboard-Read-Write-Key': apiKey,
+      'X-Vestaboard-Api-Key': apiKey,
+      'X-Vestaboard-Api-Secret': apiSecret,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(characterCodes)
+    body: JSON.stringify({ characters: characterCodes })
   });
 
   if (!response.ok) {

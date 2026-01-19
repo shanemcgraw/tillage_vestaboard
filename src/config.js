@@ -11,6 +11,8 @@ module.exports = {
     fromEmail: process.env.SENDGRID_FROM_EMAIL || 'board@tillage.place'
   },
   vestaboard: {
-    apiKey: process.env.VESTABOARD_API_KEY
+    apiKey: process.env.VESTABOARD_API_KEY,
+    apiSecret: process.env.VESTABOARD_API_SECRET,
+    subscriptionId: process.env.VESTABOARD_SUBSCRIPTION_ID
   }
 };
