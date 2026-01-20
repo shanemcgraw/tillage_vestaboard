@@ -1,7 +1,7 @@
 // Vestaboard character set: A-Z, 0-9, and limited punctuation
 // Board dimensions: 6 rows x 22 columns = 132 characters max
 
-const VESTABOARD_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$()+-&=;:\'"%,./?° ';
+const VESTABOARD_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%()+-&=;:\'"%,./?° ';
 
 const CHAR_REPLACEMENTS = {
   // Smart quotes to straight quotes
