@@ -67,7 +67,7 @@ router.post('/email', upload.none(), async (req, res) => {
 
     // Only send auto-reply if this is a new message (not a duplicate)
     if (created && sender.email) {
-      await sendAutoReply(sender.email, subject);
+      await sendAutoReply(sender.email, subject, vestaboardText);
     }
 
     // Always return 200 to acknowledge receipt

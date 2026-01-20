@@ -215,11 +215,10 @@ input:focus, textarea:focus {
   font-size: 1.5rem;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
 }
 
 .header-logo {
-  height: 1.5rem;
+  height: 64px;
   width: auto;
 }
 
@@ -271,6 +270,13 @@ input:focus, textarea:focus {
   border-radius: 4px;
   font-size: 0.8rem;
   font-weight: 500;
+  line-height: 1.2;
+}
+
+.btn.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+  line-height: 1.2;
 }
 
 .status-pending { background: #fff3cd; color: #856404; }
