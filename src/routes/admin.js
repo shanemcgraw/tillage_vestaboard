@@ -191,13 +191,13 @@ router.post('/message/:id/reject', async (req, res) => {
   }
 });
 
-// POST /admin/message/:id/retry - Retry failed message
+// POST /admin/message/:id/retry - Retry failed or repost posted message
 router.post('/message/:id/retry', async (req, res) => {
   try {
     const message = await prisma.message.findFirst({
       where: {
         id: parseInt(req.params.id),
-        status: 'failed'
+        status: { in: ['failed', 'posted'] }
       }
     });
 
@@ -233,13 +233,13 @@ router.post('/message/:id/retry', async (req, res) => {
   }
 });
 
-// POST /admin/message/:id/delete - Delete failed or rejected message
+// POST /admin/message/:id/delete - Delete failed, rejected, or posted message
 router.post('/message/:id/delete', async (req, res) => {
   try {
     const message = await prisma.message.findFirst({
       where: {
         id: parseInt(req.params.id),
-        status: { in: ['failed', 'rejected'] }
+        status: { in: ['failed', 'rejected', 'posted'] }
       }
     });
 

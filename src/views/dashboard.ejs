@@ -81,11 +81,16 @@
               <div style="display: flex; align-items: center; gap: 0.5rem;">
                 <span class="status-badge status-<%= msg.status %>"><%= msg.status %></span>
                 <% if (msg.status === 'failed') { %>
-                  <form method="POST" action="/admin/message/<%= msg.id %>/retry" style="margin: 0;">
+                  <form method="POST" action="/admin/message/<%= msg.id %>/retry" style="margin: 0;" onsubmit="return confirm('Retry posting this message?');">
                     <button type="submit" class="btn btn-sm primary">Retry</button>
                   </form>
                 <% } %>
-                <% if (msg.status === 'failed' || msg.status === 'rejected') { %>
+                <% if (msg.status === 'posted') { %>
+                  <form method="POST" action="/admin/message/<%= msg.id %>/retry" style="margin: 0;" onsubmit="return confirm('Repost this message to the board?');">
+                    <button type="submit" class="btn btn-sm primary">Repost</button>
+                  </form>
+                <% } %>
+                <% if (msg.status === 'failed' || msg.status === 'rejected' || msg.status === 'posted') { %>
                   <form method="POST" action="/admin/message/<%= msg.id %>/delete" style="margin: 0;" onsubmit="return confirm('Delete this message?');">
                     <button type="submit" class="btn btn-sm secondary">Delete</button>
                   </form>
