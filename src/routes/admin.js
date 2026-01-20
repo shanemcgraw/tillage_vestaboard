@@ -35,6 +35,7 @@ router.get('/', async (req, res) => {
         senderEmail: true,
         senderName: true,
         subject: true,
+        cleanedBody: true,
         status: true,
         createdAt: true,
         postedAt: true
@@ -232,18 +233,18 @@ router.post('/message/:id/retry', async (req, res) => {
   }
 });
 
-// POST /admin/message/:id/delete - Delete failed message
+// POST /admin/message/:id/delete - Delete failed or rejected message
 router.post('/message/:id/delete', async (req, res) => {
   try {
     const message = await prisma.message.findFirst({
       where: {
         id: parseInt(req.params.id),
-        status: 'failed'
+        status: { in: ['failed', 'rejected'] }
       }
     });
 
     if (!message) {
-      req.session.flash = { type: 'error', message: 'Message not found or not in failed state' };
+      req.session.flash = { type: 'error', message: 'Message not found or cannot be deleted' };
       return res.redirect('/admin');
     }
 
@@ -251,7 +252,7 @@ router.post('/message/:id/delete', async (req, res) => {
       where: { id: message.id }
     });
 
-    req.session.flash = { type: 'success', message: 'Failed message deleted' };
+    req.session.flash = { type: 'success', message: 'Message deleted' };
     res.redirect('/admin');
   } catch (error) {
     console.error('Delete error:', error);

@@ -71,6 +71,9 @@
                 <div class="message-sender">
                   <%= msg.senderName || msg.senderEmail %>
                 </div>
+                <div class="message-preview">
+                  <%= msg.cleanedBody ? msg.cleanedBody.substring(0, 80) + (msg.cleanedBody.length > 80 ? '...' : '') : '(empty)' %>
+                </div>
                 <div class="message-meta">
                   <%= new Date(msg.postedAt || msg.createdAt).toLocaleString() %>
                 </div>
