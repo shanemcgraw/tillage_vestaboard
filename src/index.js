@@ -6,6 +6,7 @@ const config = require('./config');
 const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin');
 const webhookRoutes = require('./routes/webhook');
+const submitRoutes = require('./routes/submit');
 
 const app = express();
 
@@ -46,6 +47,7 @@ app.use((req, res, next) => {
 app.use('/', authRoutes);
 app.use('/admin', adminRoutes);
 app.use('/webhook', webhookRoutes);
+app.use('/submit', submitRoutes);
 
 // Health check
 app.get('/health', (req, res) => {

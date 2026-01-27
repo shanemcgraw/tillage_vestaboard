@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beacon - Message Submitted</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>
+        <span style="display: flex; align-items: center; gap: 0.5rem;">
+          <img src="/beacon-logo.png" alt="Beacon Logo" class="header-logo">
+          Beacon
+        </span>
+      </h1>
+    </div>
+
+    <div class="card" style="text-align: center; padding: 3rem;">
+      <div style="font-size: 3rem; margin-bottom: 1rem; color: #28a745;">&#10003;</div>
+      <h2 style="color: #28a745; margin-bottom: 1rem;">Message Submitted!</h2>
+      <p style="color: #666; margin-bottom: 2rem;">
+        Thank you<%= senderName ? ', ' + senderName : '' %>! Your message has been submitted for review.
+        If approved, it will appear on the Vestaboard.
+      </p>
+      <a href="/submit" class="btn primary">Submit Another Message</a>
+    </div>
+  </div>
+</body>
+</html>
